@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["python" "./squirrel.py"]
+CMD ["python", "./squirrel.py"]

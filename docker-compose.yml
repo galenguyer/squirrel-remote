@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  mongo:
+    image: mongo:latest
+    command: mongod --bind_ip 0.0.0.0
+    environment:
+      - "MONGO_INITDB_ROOT_USERNAME=squirrel"
+      - "MONGO_INITDB_ROOT_PASSWORD=${SQUIRREL_MONGO_PASSWORD}"
+    networks:
+      - squirrel
+    ports:
+      - 27018:27017
+    volumes:
+      - type: volume
+        source: mongo
+        target: /data/db
+
+  squirrel:
+    image: squirrel
+    depends_on:
+      - mongo
+    environment:
+      - "MONGO_URI=mongodb://squirrel:${SQUIRREL_MONGO_PASSWORD}@mongo"
+    networks:
+      - squirrel
+
+networks:
+  squirrel:
+    name: squirrel
+    driver: bridge
+
+volumes:
+  mongo:
